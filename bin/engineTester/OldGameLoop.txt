@@ -1,0 +1,232 @@
+package engineTester;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import models.RawModel;
+import models.TexturedModel;
+
+import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector3f;
+
+import renderEngine.DisplayManager;
+import renderEngine.Loader;
+import renderEngine.MasterRenderer;
+import renderEngine.OBJLoader;
+import terrains.Terrain;
+import textures.ModelTexture;
+import entities.Camera;
+import entities.Entity;
+import entities.Light;
+
+public class OldGameLoop {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		DisplayManager.createDisplay();
+		Loader loader = new Loader();
+		Random random = new Random();
+		//StaticShader shader = new StaticShader();
+		//Renderer renderer = new Renderer(shader);
+		
+		/* QUAD 
+		float[] vertices = {
+				//left bottom triangle
+				-0.5f, 0.5f, 0f,  //V0
+				-0.5f, -0.5f, 0f, //V1
+				0.5f, -0.5f, 0f,  //V2
+				0.5f, 0.5f, 0f,   //V3
+		};
+		
+		int[] indices = {
+				0,1,3, // top left triangle (V0,V1,V2)
+				3,1,2  // bottom right triangle (V3,V1,V2)
+		};
+		
+		float[] textureCoords = {
+			0,0, //V0
+			0,1, //V1
+			1,1, //V2
+			1,0  //V3
+		};
+		
+		*/
+		
+		/* CUBE  
+		float[] vertices = {			
+				-0.5f,0.5f,-0.5f,	
+				-0.5f,-0.5f,-0.5f,	
+				0.5f,-0.5f,-0.5f,	
+				0.5f,0.5f,-0.5f,		
+				
+				-0.5f,0.5f,0.5f,	
+				-0.5f,-0.5f,0.5f,	
+				0.5f,-0.5f,0.5f,	
+				0.5f,0.5f,0.5f,
+				
+				0.5f,0.5f,-0.5f,	
+				0.5f,-0.5f,-0.5f,	
+				0.5f,-0.5f,0.5f,	
+				0.5f,0.5f,0.5f,
+				
+				-0.5f,0.5f,-0.5f,	
+				-0.5f,-0.5f,-0.5f,	
+				-0.5f,-0.5f,0.5f,	
+				-0.5f,0.5f,0.5f,
+				
+				-0.5f,0.5f,0.5f,
+				-0.5f,0.5f,-0.5f,
+				0.5f,0.5f,-0.5f,
+				0.5f,0.5f,0.5f,
+				
+				-0.5f,-0.5f,0.5f,
+				-0.5f,-0.5f,-0.5f,
+				0.5f,-0.5f,-0.5f,
+				0.5f,-0.5f,0.5f
+				
+		};
+		
+		float[] textureCoords = {
+				
+				0,0,
+				0,1,
+				1,1,
+				1,0,			
+				0,0,
+				0,1,
+				1,1,
+				1,0,			
+				0,0,
+				0,1,
+				1,1,
+				1,0,
+				0,0,
+				0,1,
+				1,1,
+				1,0,
+				0,0,
+				0,1,
+				1,1,
+				1,0,
+				0,0,
+				0,1,
+				1,1,
+				1,0
+
+				
+		};
+		
+		int[] indices = {
+				0,1,3,	
+				3,1,2,	
+				4,5,7,
+				7,5,6,
+				8,9,11,
+				11,9,10,
+				12,13,15,
+				15,13,14,	
+				16,17,19,
+				19,17,18,
+				20,21,23,
+				23,21,22
+
+		};
+		
+		*/
+		/*List<Entity> allCubes = new ArrayList<Entity>();
+		RawModel cubeRawModel = loader.loadToVAO(vertices,textureCoords, vertices ,indices);
+		ModelTexture cubeTexture = new ModelTexture(loader.loadTexture("microsoft"));
+		TexturedModel cubeModel = new TexturedModel(cubeRawModel, cubeTexture);
+		//RawModel model = loader.loadToVAO(vertices,textureCoords ,indices);
+		*/
+		
+		//RawModel model = OBJLoader.loadObjModel("stall", loader);
+	//	ModelTexture texture = new ModelTexture(loader.loadTexture("stallTexture"));
+		
+		//RawModel model = OBJLoader.loadObjModel("dragon", loader);
+		
+		
+		/*
+		  TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("white")));
+		 ModelTexture texture = staticModel.getTexture();
+		 
+		texture.setShineDamper(10);
+		texture.setReflectivity(1.0f);
+		Entity entity = new Entity(staticModel, new Vector3f(0,0,-25.0f),0,0,0,1);
+		*/
+		Camera camera = new Camera();
+		Light light = new Light(new Vector3f(20000,20000,2000), new Vector3f(1,1,1));
+		
+		
+		Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain2 = new Terrain(1,-1,loader,new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain3 = new Terrain(-1,-1,loader,new ModelTexture(loader.loadTexture("grass")));
+		
+		/*for(int i=0;i<200;i++){
+			float x  = random.nextFloat()*100 - 50;
+			float y  = random.nextFloat()*100 - 50;
+			float z  = random.nextFloat()*100 - 50;
+			allCubes.add(new Entity(cubeModel, new Vector3f(x,y,z), random.nextFloat()*180f, random.nextFloat()*180f, 0f, 1f));
+			
+		}*/
+		
+		/* Old Loop
+		while(!Display.isCloseRequested()){
+			entity.increasePosition(0, 0, 0.0f);
+			entity.increaseRotation(0, 1, 0);
+			camera.move();
+			renderer.prepare();
+			shader.start();
+			shader.loadLight(light);
+			shader.loadViewMatrix(camera);
+			renderer.render(entity, shader);
+			shader.stop();
+			DisplayManager.updateDisplay();
+		}
+		*/
+		RawModel model = OBJLoader.loadObjModel("tree", loader);
+		TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("tree")));
+		
+		TexturedModel grass = new TexturedModel(OBJLoader.loadObjModel("grassModel", loader), new ModelTexture(loader.loadTexture("grassTexture")));
+		grass.getTexture().setHasTransparency(true);
+		TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("fern", loader), new ModelTexture(loader.loadTexture("fern")));
+		fern.getTexture().setHasTransparency(true);
+		
+		grass.getTexture().setUseFakeLighting(true);
+		
+		List<Entity> entities = new ArrayList<Entity>();
+		
+		for(int i=0; i<500; i++){
+			entities.add(new Entity(staticModel, new Vector3f(random.nextFloat()*800 - 400,0,random.nextFloat()*600 - 400),0,0,0,3));
+			entities.add(new Entity(grass, new Vector3f(random.nextFloat()*800 - 400,0,random.nextFloat()*600 - 400),0,0,0,1f));
+			entities.add(new Entity(fern, new Vector3f(random.nextFloat()*800 - 400,0,random.nextFloat()*600 - 400),0,0,0,0.6f));
+		}
+		
+		MasterRenderer renderer = new MasterRenderer();
+		while(!Display.isCloseRequested()){
+			camera.move();
+			/*for(Entity cube : allCubes){
+				renderer.processEntity(cube);
+			} */
+			
+			for(Entity entity : entities){
+				renderer.processEntity(entity);
+			} 
+			
+			renderer.processTerrain(terrain3);
+			renderer.processTerrain(terrain2);
+			renderer.processTerrain(terrain);
+			
+			renderer.render(light, camera);
+			DisplayManager.updateDisplay();
+		}
+		renderer.cleanUp();
+		
+		//shader.cleanUp();
+		loader.cleanUp();
+		DisplayManager.closeDisplay();
+		
+	}
+
+}
